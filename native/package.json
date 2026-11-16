@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "sh patches/apply-google-auth-patch.sh"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +15,7 @@
     "@capacitor/app": "^6.0.3",
     "@capacitor/cli": "^6.2.3",
     "@capacitor/core": "^6.2.3",
-    "@codetrix-studio/capacitor-google-auth": "^3.4.0-rc.4"
+    "@capacitor/filesystem": "^6.0.4",
+    "@capacitor/share": "^6.0.4"
   }
 }

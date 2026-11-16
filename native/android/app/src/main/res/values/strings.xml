@@ -4,6 +4,4 @@
     <string name="title_activity_main">Expenses</string>
     <string name="package_name">com.hisab.expenses</string>
     <string name="custom_url_scheme">com.hisab.expenses</string>
-    <!-- Web OAuth client ID from SETUP-GOOGLE-DRIVE.md. Leave empty until you set one up. -->
-    <string name="server_client_id" translatable="false"></string>
 </resources>

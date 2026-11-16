@@ -30,7 +30,7 @@
   <main>
     <p class="muted">Expenses · com.hisab.expenses</p>
     <h1>Privacy Policy</h1>
-    <p class="muted">Last updated: 16 November 2026</p>
+    <p class="muted">Last updated: 17 November 2026</p>
 
     <p>Expenses is a personal spending tracker for Android. This policy explains what the app does and does not do with your information. Please add a contact email in the “Contact” section before you publish this page, then host it at a public HTTPS URL and paste that URL into Google Play Console.</p>
 
@@ -62,16 +62,16 @@
     </ul>
 
     <h2>Internet permission</h2>
-    <p>The app may use an Internet connection when you sign in, sync, or back up to Google Drive. If you never sign in, and if cloud sync and Drive backup have not been configured, the app still works as a local ledger.</p>
+    <p>The app may use an Internet connection when you sign in or sync with optional Firebase cloud sync. If you never sign in, the app still works as a local ledger. Backing up with the share sheet does not require the app itself to contact Google.</p>
 
-    <h2>Optional Google Drive backup</h2>
-    <p>If you choose to use Google Drive backup, the app signs you in with Google and uploads a JSON snapshot of the ledger stored on this device to a hidden <strong>app-data folder</strong> in <em>your</em> Google Drive. The app only requests the <code>drive.appdata</code> permission, so it cannot see the rest of your Drive. The developer cannot see these files; they live in your own Google account.</p>
-    <p>A backup can include your accounts, categories, transactions, budgets, recurring rules, and device settings (including the hashed PIN). The file is sent over an encrypted connection (HTTPS). It is not given extra encryption beyond the protection Google already applies to your account. You should treat that Google account as a copy of your ledger.</p>
-    <p>Signing in for Drive backup is optional and separate from optional Firebase sign-in. You can turn automatic daily or weekly backup off, back up only when you choose, restore a saved backup to this device, or sign out. The app keeps the newest 14 Drive backups and removes older ones after a successful backup. Signing out or uninstalling the app does not automatically delete backups already in your Drive.</p>
-    <p>Google’s processing of data in Google Drive is also described in <a href="https://policies.google.com/privacy">Google’s privacy policy</a>.</p>
+    <h2>Optional backup you save yourself</h2>
+    <p>If you choose <strong>Back up to Google Drive</strong> in Settings, the app creates a JSON snapshot of the ledger on this device and hands it to your phone’s system share sheet (or, in a browser, to the system share dialog or a file download). The app does <em>not</em> sign in to Google, does not request access to Google Drive, and does not upload the file itself. You pick where the file goes — for example <strong>Save to Drive</strong> and a Gmail account, or another app such as Files.</p>
+    <p>A backup can include your accounts, categories, transactions, budgets, recurring rules, and device settings (including the hashed PIN). The file is not encrypted. You should treat a copy you save in Drive or elsewhere as a copy of your ledger. The developer does not receive this file.</p>
+    <p>To restore, you pick a backup file with the system file picker. On Android that picker can include files in your Google Drive. Restore replaces the ledger on this device after you confirm. An optional weekly or monthly reminder can appear when you open the app if your last backup is older than that interval. The app cannot upload a backup in the background.</p>
+    <p>If you save the file in Google Drive, Google’s processing of that file is described in <a href="https://policies.google.com/privacy">Google’s privacy policy</a>.</p>
 
     <h2>Exports and backups you make</h2>
-    <p>If you export a CSV or a JSON backup, that file is saved where you choose on your device (or in an app you pick, such as Files or Drive). We do not receive a copy automatically. You are responsible for how you store or share that file. A Google Drive backup you make from Settings (described above) is stored in your Google account’s hidden app-data folder, not as a file you pick yourself.</p>
+    <p>If you export a CSV or a JSON backup, or use Back up to Google Drive, that file is saved where you choose — on your device, in an app you pick from the share sheet (such as Files or Drive), or as a download in a browser. We do not receive a copy automatically. You are responsible for how you store or share that file.</p>
 
     <h2>Android device backup</h2>
     <p>Your phone may include app data in a device-level backup (for example, Android backup) if you have that feature enabled in system settings. That backup is managed by you and your device or Google Account, not by us as a cloud-sync feature of Expenses. We cannot read a system backup from here. You can turn device backup off in Android settings, or clear the app’s storage, if you do not want a local backup kept.</p>
@@ -79,7 +79,7 @@
     <h2>How to delete your data</h2>
     <p>You can delete individual items in the app, or use <strong>Settings → Reset all data</strong> to clear the ledger on that device (this does not by itself empty the cloud copy if you are signed in).</p>
     <p>To remove the copy stored in your Firebase account, use <strong>Settings → Delete cloud data</strong> while signed in. That marks the ledger in the cloud as deleted. Logging out leaves the cloud copy in place and keeps data already on the phone.</p>
-    <p>Uninstalling Expenses removes the app’s local data from that device. It does not automatically delete your Firebase sign-in account, the cloud ledger, or Google Drive backups already stored in your account. To delete the Firebase account itself, contact the developer using the address on the store listing (or the address below, if one is added). Copies you previously exported, and Drive backups in your Google account, are not removed automatically.</p>
+    <p>Uninstalling Expenses removes the app’s local data from that device. It does not automatically delete your Firebase sign-in account, the cloud ledger, or backup files you already saved (including any you put in Google Drive). To delete the Firebase account itself, contact the developer using the address on the store listing (or the address below, if one is added). Copies you previously exported or saved yourself are not removed automatically.</p>
 
     <h2>Children</h2>
     <p>Expenses is a personal finance tool and is not directed at children. We do not knowingly collect information from children. Do not create an account or enter expense data on behalf of a child.</p>

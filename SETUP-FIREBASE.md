@@ -85,7 +85,7 @@ To refresh the **Android APK** and Play **AAB**:
 
 1. Copy the updated web files into the Capacitor project (`native/www`), including `index.html`, `firebase-config.js`, `js/`, `vendor/`, `pwa/`, and `sw.js`.
 2. From `native/`, run `npx cap sync android`.
-3. Build a debug-signed APK and a release AAB with the existing keystore, keeping `targetSdk` 36, `versionCode` 3, and `versionName` `1.2.0` (already set in this source). Output paths used previously:
+3. Build a debug-signed APK and a release AAB with the existing keystore, keeping `targetSdk` 36, `versionCode` 4, and `versionName` `1.3.0` (already set in this source). Output paths used previously:
    - APK: `/workspace/expenses-app/expenses.apk`
    - AAB: `/workspace/expenses-app/playstore/expenses-release.aab`
 

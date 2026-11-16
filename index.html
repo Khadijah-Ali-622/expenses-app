@@ -558,6 +558,14 @@ html.dark .btn.google { color: var(--text); }
 .backup-row .meta { font-size: 13px; }
 .backup-row .when { font-weight: 650; }
 .backup-row .size { font-size: 12px; color: var(--text-muted); }
+.backup-reminder {
+  background: var(--primary-soft); color: var(--primary-ink);
+  border: 1px solid color-mix(in srgb, var(--primary) 30%, var(--border));
+  border-radius: 12px; padding: 12px; font-size: 13px; margin-bottom: 12px;
+  line-height: 1.45;
+}
+.backup-reminder .backup-reminder-actions { display: flex; gap: 8px; margin-top: 10px; }
+.backup-reminder .backup-reminder-actions .btn { width: auto; padding: 8px 12px; font-size: 13px; }
   </style>
 </head>
 <body>
@@ -628,7 +636,6 @@ html.dark .btn.google { color: var(--text); }
   <div id="toast" class="toast"></div>
 
   <script src="firebase-config.js"></script>
-  <script src="google-drive-config.js"></script>
   <script src="vendor/firebase.js"></script>
   <script src="js/cloud.js"></script>
   <script src="js/drive.js"></script>
@@ -1472,7 +1479,12 @@ html.dark .btn.google { color: var(--text); }
       budgetHtml += '<div class="card empty" style="padding:16px">No budgets for this month. <button type="button" class="link" data-act="goto" data-view="budgets" style="color:var(--primary-ink);font-weight:700">Set a budget</button></div>';
     }
 
-    return '<div class="page-kicker">Overview</div><div class="page-header"><h2>' + escapeHtml(monthLabel(ym, true)) + '</h2></div>' +
+    var reminderHtml = '';
+    if (window.HisabDrive && HisabDrive.shouldRemind && HisabDrive.shouldRemind() && HisabDrive.getStatus().reminder) {
+      reminderHtml = '<div class="backup-reminder" data-testid="backup-reminder"><div>' + escapeHtml(HisabDrive.reminderMessage()) + '</div><div class="backup-reminder-actions"><button type="button" class="btn" data-act="drive-backup">Back up now</button><button type="button" class="btn secondary" data-act="drive-reminder-dismiss">Dismiss</button></div></div>';
+    }
+
+    return reminderHtml + '<div class="page-kicker">Overview</div><div class="page-header"><h2>' + escapeHtml(monthLabel(ym, true)) + '</h2></div>' +
       '<div class="card balance-card"><div class="lbl caps">Total balance</div><div class="val num" data-testid="dashboard-balance">' + escapeHtml(formatMoney(totalBalance())) + '</div><div class="lbl" style="margin-top:8px">Net this month: <span class="num">' + escapeHtml(formatMoney(tot.net)) + '</span></div></div>' +
       '<div class="stat-row"><div class="stat income"><div class="lbl">Income</div><div class="val num" data-testid="dashboard-income">' + escapeHtml(formatMoney(tot.income)) + '</div></div><div class="stat expense"><div class="lbl">Expenses</div><div class="val num" data-testid="dashboard-expense">' + escapeHtml(formatMoney(tot.expense)) + '</div></div></div>' +
       '<div class="section-title">Budgets <button type="button" class="link" data-act="goto" data-view="budgets">Manage</button></div>' + budgetHtml +
@@ -1662,39 +1674,20 @@ html.dark .btn.google { color: var(--text); }
 
   function driveStatusHtml() {
     var drive = window.HisabDrive;
-    if (!drive || !drive.isConfigured()) {
-      return '<div class="section-title">Google Drive backup</div><div class="cloud-banner">Google Drive backup isn\'t set up yet. To enable it, create a Google Cloud OAuth client, paste the client ID into <code>google-drive-config.js</code>, and follow <code>SETUP-GOOGLE-DRIVE.md</code>. Then rebuild the app or refresh this page. Everything else works offline as before.</div>';
-    }
-    var st = drive.getStatus();
+    var st = drive ? drive.getStatus() : { schedule: 'off', lastBackupAt: 0, busy: false, error: '' };
     var sched = st.schedule || 'off';
-    var schedOpts = ['off', 'daily', 'weekly'].map(function (v) {
-      var label = v === 'off' ? 'Off' : (v === 'daily' ? 'Daily' : 'Weekly');
+    var schedOpts = ['off', 'weekly', 'monthly'].map(function (v) {
+      var label = v === 'off' ? 'Off' : (v === 'weekly' ? 'Weekly' : 'Monthly');
       return '<option value="' + v + '"' + (sched === v ? ' selected' : '') + '>' + label + '</option>';
     }).join('');
     var last = 'Last backup: ' + formatBackupWhen(st.lastBackupAt);
     var err = st.error ? '<div class="hint" style="color:var(--danger);margin-top:6px">' + escapeHtml(st.error) + '</div>' : '';
-    if (!st.signedIn) {
-      return '<div class="section-title">Google Drive backup</div><div class="card"><div class="set-row"><div><div class="lbl">Not signed in</div><div class="hint">Sign in with Google to back up to a hidden folder in your Drive. The app cannot see the rest of your Drive.</div></div></div>' +
-        '<button type="button" class="btn google" data-act="drive-signin">Sign in with Google</button>' +
-        '<div class="set-row" style="margin-top:8px"><div><div class="lbl">Automatic backup</div><div class="hint">Runs when you open the app, if the interval has passed</div></div><select id="fld-drive-schedule" data-act="drive-schedule">' + schedOpts + '</select></div>' +
-        '<div class="hint" style="margin-top:4px">' + escapeHtml(last) + '</div>' + err + '</div>';
-    }
-    var who = st.email || (st.account && st.account.label) || 'Signed in to Google';
-    var listHtml = '';
-    if (st.listLoading) {
-      listHtml = '<div class="hint" style="margin-top:8px">Loading backups…</div>';
-    } else if (st.backups && st.backups.length) {
-      listHtml = '<div class="backup-list">' + st.backups.map(function (f) {
-        var label = formatBackupWhen(f.createdTime || f.modifiedTime) || f.name;
-        return '<div class="backup-row"><div class="meta"><div class="when">' + escapeHtml(label) + '</div><div class="size">' + escapeHtml(f.name) + '</div></div><button type="button" class="btn secondary" style="width:auto;padding:8px 12px;font-size:13px" data-act="drive-restore" data-id="' + escapeHtml(f.id) + '">Restore</button></div>';
-      }).join('') + '</div>';
-    } else {
-      listHtml = '<div class="hint" style="margin-top:8px">No backups saved yet.</div>';
-    }
-    return '<div class="section-title">Google Drive backup</div><div class="card"><div class="set-row"><div><div class="lbl">' + escapeHtml(who) + '</div><div class="hint">' + escapeHtml(last) + '</div>' + err + '</div></div>' +
-      '<div class="btn-row"><button type="button" class="btn" data-act="drive-backup" ' + (st.busy ? 'disabled' : '') + '>' + (st.busy ? 'Working…' : 'Back up now') + '</button><button type="button" class="btn secondary" data-act="drive-signout">Sign out</button></div>' +
-      '<div class="set-row"><div><div class="lbl">Automatic backup</div><div class="hint">Runs when you open the app, if the interval has passed</div></div><select id="fld-drive-schedule" data-act="drive-schedule">' + schedOpts + '</select></div>' +
-      listHtml + '</div>';
+    var helper = (drive && drive.helperText) || 'Choose Save to Drive, then your Gmail account.';
+    return '<div class="section-title">Google Drive backup</div><div class="card"><div class="set-row"><div><div class="lbl">' + escapeHtml(last) + '</div><div class="hint">' + escapeHtml(helper) + '</div>' + err + '</div></div>' +
+      '<div class="btn-row"><button type="button" class="btn" data-act="drive-backup" ' + (st.busy ? 'disabled' : '') + '>' + (st.busy ? 'Working…' : 'Back up to Google Drive') + '</button></div>' +
+      '<button type="button" class="btn secondary" style="margin-top:8px" data-act="drive-restore">Restore from backup file</button>' +
+      '<input id="restore-backup-file" type="file" accept="application/json,.json" hidden />' +
+      '<div class="set-row" style="margin-top:8px"><div><div class="lbl">Backup reminder</div><div class="hint">A gentle banner when you open the app, if your last backup is older than this. The app cannot upload on its own.</div></div><select id="fld-drive-schedule" data-act="drive-schedule">' + schedOpts + '</select></div></div>';
   }
 
   function renderSettings() {
@@ -2154,6 +2147,20 @@ html.dark .btn.google { color: var(--text); }
     reader.readAsText(file);
   }
 
+  function restoreBackupFile(file) {
+    if (!window.HisabDrive) return;
+    HisabDrive.readBackupFile(file).then(function (snap) {
+      return confirmDlg('Replace all data?', 'Restoring this backup will replace accounts, transactions, budgets and rules on this device, then reload the app. This cannot be undone except by restoring another backup.', 'Restore', true).then(function (ok) {
+        if (!ok) return;
+        HisabDrive.restore(snap);
+        toast('Backup restored. Reloading…');
+        setTimeout(function () { location.reload(); }, 400);
+      });
+    }).catch(function (err) {
+      toast(HisabDrive.friendlyError(err));
+    });
+  }
+
   async function resetAllData() {
     const ok = await confirmDlg('Reset all data?', 'Transactions, budgets and recurring rules will be deleted. Accounts and categories will return to defaults. Your PIN and theme stay as they are.', 'Reset', true);
     if (!ok) return;
@@ -2410,57 +2417,28 @@ html.dark .btn.google { color: var(--text); }
       if (input) { input.value = ''; input.click(); }
       return;
     }
-    if (act === 'drive-signin') {
-      if (!window.HisabDrive) return;
-      toast('Opening Google sign-in…');
-      HisabDrive.signIn().then(function () {
-        toast('Signed in to Google Drive');
-        render();
-        return HisabDrive.listBackups();
-      }).then(function () { if (ui.view === 'settings') render(); }).catch(function (err) {
-        toast(HisabDrive.friendlyError(err));
-        if (ui.view === 'settings') render();
-      });
-      return;
-    }
-    if (act === 'drive-signout') {
-      if (!window.HisabDrive) return;
-      confirmDlg('Sign out of Google Drive?', 'Automatic backups will stop until you sign in again. Backups already in your Drive stay there.', 'Sign out', false).then(function (ok) {
-        if (!ok) return;
-        HisabDrive.signOut().then(function () {
-          toast('Signed out of Google Drive');
-          render();
-        });
-      });
-      return;
-    }
     if (act === 'drive-backup') {
       if (!window.HisabDrive) return;
-      if (!HisabDrive.isSignedIn()) { toast('Sign in with Google to back up.'); return; }
-      toast('Backing up…');
-      HisabDrive.backupNow().then(function () {
-        toast('Backup saved to Google Drive');
+      toast('Preparing backup…');
+      HisabDrive.backupNow().then(function (result) {
+        if (result && result.method === 'download') toast('Backup file downloaded. Upload it to Drive if you want a copy there.');
+        else toast('Choose Save to Drive, then your Gmail account.');
         render();
       }).catch(function (err) {
-        toast(HisabDrive.friendlyError(err));
-        if (ui.view === 'settings') render();
+        if (err && err.code === 'cancelled') toast('Share was cancelled.');
+        else toast(HisabDrive.friendlyError(err));
+        render();
       });
       return;
     }
     if (act === 'drive-restore') {
-      if (!window.HisabDrive) return;
-      var fileId = el.getAttribute('data-id');
-      confirmDlg('Replace all data?', 'Restoring this backup will replace accounts, transactions, budgets and rules on this device, then reload the app. This cannot be undone except by restoring another backup.', 'Restore', true).then(function (ok) {
-        if (!ok) return;
-        toast('Restoring…');
-        HisabDrive.restore(fileId).then(function () {
-          toast('Backup restored. Reloading…');
-          setTimeout(function () { location.reload(); }, 400);
-        }).catch(function (err) {
-          toast(HisabDrive.friendlyError(err));
-          if (ui.view === 'settings') render();
-        });
-      });
+      var input = document.getElementById('restore-backup-file');
+      if (input) { input.value = ''; input.click(); }
+      return;
+    }
+    if (act === 'drive-reminder-dismiss') {
+      if (window.HisabDrive) HisabDrive.dismissReminder();
+      render();
       return;
     }
     if (act === 'drive-schedule') return;
@@ -2484,9 +2462,11 @@ html.dark .btn.google { color: var(--text); }
     if (el.id === 'fld-drive-schedule' || el.getAttribute('data-act') === 'drive-schedule') {
       if (window.HisabDrive) {
         HisabDrive.setSchedule(el.value);
-        toast(el.value === 'off' ? 'Automatic backup turned off' : (el.value === 'daily' ? 'Automatic daily backup on' : 'Automatic weekly backup on'));
+        toast(el.value === 'off' ? 'Backup reminder off' : (el.value === 'monthly' ? 'Monthly backup reminder on' : 'Weekly backup reminder on'));
+        render();
       }
     }
+    if (el.id === 'restore-backup-file' && el.files && el.files[0]) restoreBackupFile(el.files[0]);
     if (el.id === 'import-file' && el.files && el.files[0]) importJsonFile(el.files[0]);
   }
 
@@ -2712,14 +2692,10 @@ html.dark .btn.google { color: var(--text); }
     if (!drive) return;
     drive.init({
       onChange: function () {
-        if (appEntered && ui.view === 'settings') render();
+        if (appEntered && (ui.view === 'settings' || ui.view === 'home')) render();
       }
     });
-    if (!appEntered || !drive.isConfigured()) return;
-    drive.maybeAutoBackup().then(function (st) {
-      if (st && st.lastBackupAt) toast('Backup saved to Google Drive');
-      if (appEntered && ui.view === 'settings') render();
-    });
+    if (appEntered && (ui.view === 'home' || ui.view === 'settings')) render();
   }
 
   function startCloud() {

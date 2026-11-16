@@ -12,13 +12,6 @@
   "plugins": {
     "App": {
       "disableBackButtonHandler": false
-    },
-    "GoogleAuth": {
-      "scopes": [
-        "https://www.googleapis.com/auth/drive.appdata"
-      ],
-      "serverClientId": "",
-      "forceCodeForRefreshToken": false
     }
   }
 }

@@ -38,6 +38,6 @@
         </provider>
     </application>
 
-    <!-- Needed for optional Firebase login and cloud sync. The app still works offline when sync is off or the device has no network. -->
+    <!-- Needed for optional Firebase login and cloud sync. The app still works offline when sync is off or the device has no network. Share-sheet backup does not use this permission. -->
     <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

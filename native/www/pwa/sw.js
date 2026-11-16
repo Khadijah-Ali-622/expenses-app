@@ -3,7 +3,7 @@
    scope covers index.html. If this file is registered directly,
    it still resolves assets relative to the app root. */
 /* eslint-disable no-restricted-globals */
-const CACHE_NAME = 'expenses-pwa-v3';
+const CACHE_NAME = 'expenses-pwa-v4';
 
 function appRoot() {
   const url = new URL(self.location.href);
@@ -18,7 +18,6 @@ const ROOT = appRoot();
 const PRECACHE = [
   new URL('index.html', ROOT).href,
   new URL('firebase-config.js', ROOT).href,
-  new URL('google-drive-config.js', ROOT).href,
   new URL('js/cloud.js', ROOT).href,
   new URL('js/drive.js', ROOT).href,
   new URL('vendor/firebase.js', ROOT).href,
