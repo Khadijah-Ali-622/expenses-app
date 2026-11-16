@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Privacy Policy — Expenses</title>
+  <style>
+    :root { color-scheme: light; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Helvetica Neue", ui-sans-serif, system-ui, sans-serif;
+      background: #F3F0E8;
+      color: #1B221F;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+    }
+    h1 { font-size: 2rem; letter-spacing: -0.03em; margin: 0 0 8px; }
+    h2 { font-size: 1.2rem; margin: 28px 0 8px; }
+    p, li { font-size: 1rem; }
+    .muted { color: #5E6C66; }
+    a { color: #0E6B56; }
+    hr { border: 0; border-top: 1px solid #E4DDD0; margin: 32px 0; }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="muted">Expenses · com.hisab.expenses</p>
+    <h1>Privacy Policy</h1>
+    <p class="muted">Last updated: 16 November 2026</p>
+
+    <p>Expenses is a personal spending tracker for Android. This policy explains what the app does and does not do with your information. Please add a contact email in the “Contact” section before you publish this page, then host it at a public HTTPS URL and paste that URL into Google Play Console.</p>
+
+    <h2>Who we are</h2>
+    <p>Expenses is published by the developer named on the Google Play store listing for the app with package name <code>com.hisab.expenses</code>.</p>
+
+    <h2>What the app stores on your device</h2>
+    <p>The app keeps a local copy of your ledger on the device: accounts and wallets, categories, transactions, budgets, recurring rules, and display settings (such as currency and dark mode). An optional 4-digit PIN stays only on that device, stored as a one-way hash, not as the PIN itself. The PIN is a device lock; it is never sent to the cloud.</p>
+    <p>You can use the app entirely offline and without an account. In that case, your ledger does not leave the device except if you export a file yourself, or if your phone includes the app in a device-level backup (see below).</p>
+
+    <h2>Optional account and cloud sync</h2>
+    <p>If you choose to sign in, the app uses <strong>Google Firebase</strong> (Firebase Authentication and Cloud Firestore) in a project operated by the developer. Signing in is optional. Until you sign in, expense data stays on the device.</p>
+    <p>When you create an account or sign in (email and password, or Google sign-in):</p>
+    <ul>
+      <li>Your <strong>email address</strong> (and, if you use Google sign-in, the basic Google account details Firebase receives to complete sign-in) is stored in Firebase Authentication so we can recognise your account.</li>
+      <li>Firebase also assigns a <strong>user ID</strong> to your account.</li>
+      <li>Your <strong>expense data</strong> — accounts, categories, transactions, budgets, and recurring rules — is stored in Cloud Firestore under your user ID so it can sync across your devices and be restored if you sign in on a new phone.</li>
+    </ul>
+    <p>That cloud copy is held in the developer’s Firebase project, which is hosted by Google. Google’s processing of data in Firebase is also described in <a href="https://firebase.google.com/support/privacy">Firebase’s privacy information</a>. We do not sell your data. We use it only to provide your account, sync, and backup.</p>
+    <p>Data sent to Firebase travels over an encrypted connection (HTTPS).</p>
+
+    <h2>What we do not collect</h2>
+    <ul>
+      <li>We do not sell or use your information for advertising.</li>
+      <li>We do not use analytics, advertising, or crash-reporting SDKs.</li>
+      <li>We do not show ads.</li>
+      <li>We do not access your contacts, location, photos, SMS, or camera unless you later use a feature that clearly asks for it. The current version does not use those permissions.</li>
+      <li>Your PIN, currency preference, and dark-mode setting stay on the device and are not synced.</li>
+    </ul>
+
+    <h2>Internet permission</h2>
+    <p>The app may use an Internet connection when you sign in or sync. If you never sign in, or if cloud sync has not been configured, the app still works as a local ledger.</p>
+
+    <h2>Exports and backups you make</h2>
+    <p>If you export a CSV or a JSON backup, that file is saved where you choose on your device (or in an app you pick, such as Files or Drive). We do not receive a copy automatically. You are responsible for how you store or share that file.</p>
+
+    <h2>Android device backup</h2>
+    <p>Your phone may include app data in a device-level backup (for example, Android backup) if you have that feature enabled in system settings. That backup is managed by you and your device or Google Account, not by us as a cloud-sync feature of Expenses. We cannot read a system backup from here. You can turn device backup off in Android settings, or clear the app’s storage, if you do not want a local backup kept.</p>
+
+    <h2>How to delete your data</h2>
+    <p>You can delete individual items in the app, or use <strong>Settings → Reset all data</strong> to clear the ledger on that device (this does not by itself empty the cloud copy if you are signed in).</p>
+    <p>To remove the copy stored in your Firebase account, use <strong>Settings → Delete cloud data</strong> while signed in. That marks the ledger in the cloud as deleted. Logging out leaves the cloud copy in place and keeps data already on the phone.</p>
+    <p>Uninstalling Expenses removes the app’s local data from that device. It does not automatically delete your Firebase sign-in account or the cloud ledger. To delete the account itself, contact the developer using the address on the store listing (or the address below, if one is added). Copies you previously exported are not removed automatically.</p>
+
+    <h2>Children</h2>
+    <p>Expenses is a personal finance tool and is not directed at children. We do not knowingly collect information from children. Do not create an account or enter expense data on behalf of a child.</p>
+
+    <h2>Changes</h2>
+    <p>If this policy changes, we will update the date at the top of this page. The installed app will only change its behaviour when you install an update from Google Play (or another source you choose).</p>
+
+    <h2>Contact</h2>
+    <p>For privacy questions, including a request to delete your account, contact the developer using the email address shown on the Expenses store listing on Google Play.</p>
+    <p class="muted">Optional: replace the sentence above with a dedicated address, for example: <em>privacy@your-domain.com</em>, before you host this page.</p>
+
+    <hr>
+    <p class="muted">This policy applies to the Android app Expenses (package <code>com.hisab.expenses</code>). Expenses is a personal tracker. It is not a bank, wallet, or payment service and cannot send or receive money.</p>
+  </main>
+</body>
+</html>

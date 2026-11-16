@@ -1,0 +1,21 @@
+# secrets / signing
+*.keystore
+*.jks
+keystore.properties
+native/android/keystore.properties
+playstore/signing/
+playstore/keystore-info.txt
+# build outputs & binaries
+*.apk
+*.aab
+*.zip
+node_modules/
+native/android/build/
+native/android/app/build/
+native/android/.gradle/
+native/android/local.properties
+native/android/.idea/
+native/android/capacitor-cordova-android-plugins/build/
+.firebase/
+*.log
+pages-upload/
