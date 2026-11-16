@@ -19,7 +19,7 @@ Length: 78 / 80
 ```
 Expenses is a simple, private money tracker built for everyday use in Pakistan. Record spending and income in Pakistani rupees, set monthly budgets, and see where your money goes — all on your phone.
 
-You can use it fully offline with no account. Optional sign-in backs up your ledger to your own account (Firebase) so it can sync across devices. There are no ads and no tracking SDKs. Your PIN stays on the device.
+You can use it fully offline with no account. Optional sign-in backs up your ledger to your own account (Firebase) so it can sync across devices. You can also optionally back up a snapshot to a hidden folder in your Google Drive. There are no ads and no tracking SDKs. Your PIN stays on the device (a Drive backup, if you use one, includes the hashed PIN in that file).
 
 WHAT YOU CAN DO
 
@@ -29,7 +29,7 @@ WHAT YOU CAN DO
 • Set monthly budgets for overall spending or for a single category, with a warning when you reach your limit.
 • Repeat bills automatically with daily, weekly, monthly, or yearly rules.
 • See this month’s totals, a category breakdown, and how spending compares with last month.
-• Search and filter your history, then export a CSV or a full JSON backup you keep yourself.
+• Search and filter your history, then export a CSV or a full JSON backup you keep yourself, or optionally back up to Google Drive.
 • Protect the app with an optional 4-digit PIN, and switch on dark mode when you want it.
 
 BUILT AROUND PKR
@@ -38,7 +38,7 @@ Amounts are shown as “Rs 1,250”. You can switch the display currency in Sett
 
 PRIVACY
 
-Your ledger is stored on the phone first. If you sign in, your email and expense data are also stored in your Firebase account so they can sync. The PIN never leaves the device. You can delete cloud data in Settings, or export a CSV or JSON backup to keep yourself. We do not sell your information or use it for ads.
+Your ledger is stored on the phone first. If you sign in, your email and expense data are also stored in your Firebase account so they can sync. If you use Google Drive backup, a snapshot is stored in a hidden app folder in your own Drive. The PIN never leaves the device except as a one-way hash inside a Drive backup you choose to make. You can delete cloud data in Settings, or export a CSV or JSON backup to keep yourself. We do not sell your information or use it for ads.
 
 Expenses is a personal tracker. It is not a bank, wallet, or payment app and cannot send or receive money.
 ```

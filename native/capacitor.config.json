@@ -7,11 +7,18 @@
     "hostname": "expenses.app"
   },
   "android": {
-    "backgroundColor": "#0E6B56"
+    "backgroundColor": "#0A264B"
   },
   "plugins": {
     "App": {
       "disableBackButtonHandler": false
+    },
+    "GoogleAuth": {
+      "scopes": [
+        "https://www.googleapis.com/auth/drive.appdata"
+      ],
+      "serverClientId": "",
+      "forceCodeForRefreshToken": false
     }
   }
 }
